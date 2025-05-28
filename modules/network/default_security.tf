@@ -1,0 +1,83 @@
+resource "oci_core_default_security_list" "default" {
+  manage_default_resource_id = oci_core_vcn.this.default_security_list_id
+
+  egress_security_rules {
+    destination = local.anywhere
+    protocol    = "all"
+    description = "Auto-generated - allow all egress traffic"
+  }
+
+  dynamic "egress_security_rules" {
+    for_each = var.enable_ipv6 == true ? [1] : []
+
+    content {
+      destination = local.anywhere_ipv6
+      protocol    = "all"
+      description = "Auto-generated - allow all egress traffic IPv6"
+    }
+  }
+
+  ingress_security_rules {
+    protocol    = "6"
+    source      = local.anywhere
+    description = "Auto-generated - allow all SSH ingress"
+    tcp_options {
+      min = 22
+      max = 22
+    }
+  }
+
+  dynamic "ingress_security_rules" {
+    for_each = var.enable_ipv6 == true ? [1] : []
+
+    content {
+      protocol    = "6"
+      source      = local.anywhere_ipv6
+      description = "Auto-generated - allow all SSH ingress IPv6"
+      tcp_options {
+        min = 22
+        max = 22
+      }
+    }
+  }
+
+  ingress_security_rules {
+    protocol    = "1"
+    source      = local.anywhere
+    description = "Auto-generated - allow ICMP for all type 3 code 4"
+    icmp_options {
+      type = "3"
+      code = "4"
+    }
+  }
+
+  dynamic "ingress_security_rules" {
+    for_each = var.enable_ipv6 == true ? [1] : []
+
+    content {
+      protocol    = "1"
+      source      = local.anywhere_ipv6
+      description = "Auto-generated - allow ICMP for all type 3 code 4 IPv6"
+      icmp_options {
+        type = "3"
+        code = "4"
+      }
+    }
+  }
+
+  ingress_security_rules {
+    protocol = "1"
+    source   = var.vcn_cidr
+    icmp_options {
+      type = "3"
+    }
+    description = "Auto-generated - allow all ICMP from VCN"
+  }
+
+  freeform_tags = var.freeform_tags
+  defined_tags  = var.defined_tags
+
+  lifecycle {
+    ignore_changes = [egress_security_rules, ingress_security_rules, defined_tags]
+  }
+}
