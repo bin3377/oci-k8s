@@ -151,7 +151,7 @@ resource "oci_core_security_list" "public_sl" {
   }
 }
 
-resource "oci_core_subnet" "vcn_public_subnet" {
+resource "oci_core_subnet" "public" {
   compartment_id = var.compartment_id
   vcn_id         = oci_core_vcn.this.id
   display_name   = "${var.prefix}-public-subnet"

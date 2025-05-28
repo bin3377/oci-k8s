@@ -3,9 +3,9 @@ variable "compartment_id" {
   description = "compartment id where to create all resources."
 }
 
-variable "enable_ipv6" {
-  type        = bool
-  description = "Whether IPv6 is enabled for the VCN. If enabled, Oracle will assign the VCN a IPv6 /56 CIDR block."
+variable "kubernetes_version" {
+  type        = string
+  description = "version of the kubernetes cluster."
 }
 
 variable "prefix" {
@@ -13,24 +13,24 @@ variable "prefix" {
   description = "The prefix of all resources name."
 }
 
-variable "vcn_cidr" {
+variable "vcn_id" {
   type        = string
-  description = "The IPv4 CIDR blocks of the VCN."
+  description = "VCN id the kubernetes cluster host in."
 }
 
-variable "private_subnet_cidr" {
+variable "private_subnet_id" {
   type        = string
-  description = "The IPv4 CIDR block of the private subnet."
+  description = "The id of the private subnet."
 }
 
-variable "public_subnet_cidr" {
+variable "public_subnet_id" {
   type        = string
-  description = "The IPv4 CIDR block of the public subnet."
+  description = "The id of the public subnet."
 }
 
-variable "public_subnet_open_ports" {
-  type        = set(number)
-  description = "The list of ports opened in public subnet."
+variable "ssh_public_key" {
+  type        = string
+  description = "The public key for SSH to worker node."
 }
 
 variable "freeform_tags" {

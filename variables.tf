@@ -1,12 +1,17 @@
-variable "region" {
-  # List of regions: https://docs.cloud.oracle.com/iaas/Content/General/Concepts/regions.htm#ServiceAvailabilityAcrossRegions
-  description = "the OCI region where resources will be created"
-  type        = string
-}
+# variable "region" {
+#   # List of regions: https://docs.cloud.oracle.com/iaas/Content/General/Concepts/regions.htm#ServiceAvailabilityAcrossRegions
+#   description = "the OCI region where resources will be created"
+#   type        = string
+# }
 
 variable "compartment_id" {
   type        = string
   description = "The compartment to create all resources in"
+}
+
+variable "ssh_public_key" {
+  type        = string
+  description = "The public key for SSH to worker node."
 }
 
 variable "freeform_tags" {
