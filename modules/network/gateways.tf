@@ -20,7 +20,7 @@ resource "oci_core_route_table" "igw" {
   route_rules {
     destination       = local.anywhere
     network_entity_id = oci_core_internet_gateway.igw.id
-    description       = "Auto-generated - Internet Gateway as default gateway"
+    description       = "Internet Gateway as default gateway"
   }
 
   dynamic "route_rules" {
@@ -29,7 +29,7 @@ resource "oci_core_route_table" "igw" {
     content {
       destination       = local.anywhere_ipv6
       network_entity_id = oci_core_internet_gateway.igw.id
-      description       = "Auto-generated - Internet Gateway as default gateway"
+      description       = "Internet Gateway as default gateway"
     }
   }
 
@@ -76,7 +76,7 @@ resource "oci_core_route_table" "sgw" {
     destination       = lookup(data.oci_core_services.all_oci_services.services[0], "cidr_block")
     destination_type  = "SERVICE_CIDR_BLOCK"
     network_entity_id = oci_core_service_gateway.sgw.id
-    description       = "Auto-generated - All Services in region to Service Gateway"
+    description       = "All Services in region to Service Gateway"
   }
 
   freeform_tags = var.freeform_tags
@@ -121,14 +121,14 @@ resource "oci_core_route_table" "ngw" {
     destination       = local.anywhere
     destination_type  = "CIDR_BLOCK"
     network_entity_id = oci_core_nat_gateway.ngw.id
-    description       = "Auto-generated - NAT Gateway as default gateway"
+    description       = "NAT Gateway as default gateway"
   }
 
   route_rules {
     destination       = lookup(data.oci_core_services.all_oci_services.services[0], "cidr_block")
     destination_type  = "SERVICE_CIDR_BLOCK"
     network_entity_id = oci_core_service_gateway.sgw.id
-    description       = "Auto-generated - All Services in region to Service Gateway"
+    description       = "All Services in region to Service Gateway"
   }
 
   freeform_tags = var.freeform_tags

@@ -4,7 +4,7 @@ resource "oci_core_default_security_list" "default" {
   egress_security_rules {
     destination = local.anywhere
     protocol    = "all"
-    description = "Auto-generated - allow all egress traffic"
+    description = "allow all egress traffic"
   }
 
   dynamic "egress_security_rules" {
@@ -13,14 +13,14 @@ resource "oci_core_default_security_list" "default" {
     content {
       destination = local.anywhere_ipv6
       protocol    = "all"
-      description = "Auto-generated - allow all egress traffic IPv6"
+      description = "allow all egress traffic IPv6"
     }
   }
 
   ingress_security_rules {
     protocol    = "6"
     source      = local.anywhere
-    description = "Auto-generated - allow all SSH ingress"
+    description = "allow all SSH ingress"
     tcp_options {
       min = 22
       max = 22
@@ -33,7 +33,7 @@ resource "oci_core_default_security_list" "default" {
     content {
       protocol    = "6"
       source      = local.anywhere_ipv6
-      description = "Auto-generated - allow all SSH ingress IPv6"
+      description = "allow all SSH ingress IPv6"
       tcp_options {
         min = 22
         max = 22
@@ -44,7 +44,7 @@ resource "oci_core_default_security_list" "default" {
   ingress_security_rules {
     protocol    = "1"
     source      = local.anywhere
-    description = "Auto-generated - allow ICMP for all type 3 code 4"
+    description = "allow ICMP for all type 3 code 4"
     icmp_options {
       type = "3"
       code = "4"
@@ -57,7 +57,7 @@ resource "oci_core_default_security_list" "default" {
     content {
       protocol    = "1"
       source      = local.anywhere_ipv6
-      description = "Auto-generated - allow ICMP for all type 3 code 4 IPv6"
+      description = "allow ICMP for all type 3 code 4 IPv6"
       icmp_options {
         type = "3"
         code = "4"
@@ -71,13 +71,13 @@ resource "oci_core_default_security_list" "default" {
     icmp_options {
       type = "3"
     }
-    description = "Auto-generated - allow all ICMP from VCN"
+    description = "allow all ICMP from VCN"
   }
 
   freeform_tags = var.freeform_tags
   defined_tags  = var.defined_tags
 
   lifecycle {
-    ignore_changes = [egress_security_rules, ingress_security_rules, defined_tags]
+    ignore_changes = [egress_security_rules, ingress_security_rules, freeform_tags, defined_tags]
   }
 }

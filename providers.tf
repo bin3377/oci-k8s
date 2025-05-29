@@ -4,9 +4,19 @@ terraform {
       source  = "oracle/oci"
       version = "~> 7.2.0"
     }
+
+    kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = "~> 2.37"
+    }
   }
 }
 
 provider "oci" {
   config_file_profile = "DEFAULT"
+}
+
+provider "kubernetes" {
+  config_path    = "~/.kube/config"
+  config_context = "oci"
 }

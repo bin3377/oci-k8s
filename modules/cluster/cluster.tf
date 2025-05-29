@@ -29,5 +29,12 @@ resource "oci_containerengine_cluster" "this" {
 
     service_lb_subnet_ids = [data.oci_core_subnet.public.id]
   }
+
+  freeform_tags = var.freeform_tags
+  defined_tags  = var.defined_tags
+
+  lifecycle {
+    ignore_changes = [defined_tags, freeform_tags]
+  }
 }
 

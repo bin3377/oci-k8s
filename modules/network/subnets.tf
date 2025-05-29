@@ -9,7 +9,7 @@ resource "oci_core_security_list" "private_sl" {
     destination      = local.anywhere
     destination_type = "CIDR_BLOCK"
     protocol         = "all"
-    description      = "Auto-generated - allow all egress traffic"
+    description      = "allow all egress traffic"
   }
 
   dynamic "egress_security_rules" {
@@ -18,7 +18,7 @@ resource "oci_core_security_list" "private_sl" {
     content {
       destination = local.anywhere_ipv6
       protocol    = "all"
-      description = "Auto-generated - allow all egress traffic IPv6"
+      description = "allow all egress traffic IPv6"
     }
   }
 
@@ -27,30 +27,15 @@ resource "oci_core_security_list" "private_sl" {
     source      = var.vcn_cidr
     source_type = "CIDR_BLOCK"
     protocol    = "all"
-    description = "Auto-generated - allow all ingress from VCN"
+    description = "allow all ingress from VCN"
   }
 
-  # ingress_security_rules {
-  #   stateless   = false
-  #   source      = var.private_subnet_cidr
-  #   source_type = "CIDR_BLOCK"
-  #   protocol    = "6"
-  #   tcp_options {
-  #     min = 10256
-  #     max = 10256
-  #   }
-  # }
+  freeform_tags = var.freeform_tags
+  defined_tags  = var.defined_tags
 
-  # ingress_security_rules {
-  #   stateless   = false
-  #   source      = "10.0.0.0/24"
-  #   source_type = "CIDR_BLOCK"
-  #   protocol    = "6"
-  #   tcp_options {
-  #     min = 31600
-  #     max = 31600
-  #   }
-  # }
+  lifecycle {
+    ignore_changes = [defined_tags, freeform_tags]
+  }
 }
 
 resource "oci_core_subnet" "private" {
@@ -62,6 +47,13 @@ resource "oci_core_subnet" "private" {
   route_table_id             = oci_core_route_table.ngw.id
   security_list_ids          = [oci_core_security_list.private_sl.id]
   prohibit_public_ip_on_vnic = true
+
+  freeform_tags = var.freeform_tags
+  defined_tags  = var.defined_tags
+
+  lifecycle {
+    ignore_changes = [defined_tags, freeform_tags]
+  }
 }
 
 # public subnet
@@ -75,7 +67,7 @@ resource "oci_core_security_list" "public_sl" {
     destination      = local.anywhere
     destination_type = "CIDR_BLOCK"
     protocol         = "all"
-    description      = "Auto-generated - allow all egress traffic"
+    description      = "allow all egress traffic"
   }
 
   dynamic "egress_security_rules" {
@@ -84,7 +76,7 @@ resource "oci_core_security_list" "public_sl" {
     content {
       destination = local.anywhere_ipv6
       protocol    = "all"
-      description = "Auto-generated - allow all egress traffic IPv6"
+      description = "allow all egress traffic IPv6"
     }
   }
 
@@ -93,30 +85,8 @@ resource "oci_core_security_list" "public_sl" {
     source      = var.vcn_cidr
     source_type = "CIDR_BLOCK"
     protocol    = "all"
-    description = "Auto-generated - allow all ingress from VCN"
+    description = "allow all ingress from VCN"
   }
-
-  # egress_security_rules {
-  #   stateless        = false
-  #   destination      = "10.0.1.0/24"
-  #   destination_type = "CIDR_BLOCK"
-  #   protocol         = "6"
-  #   tcp_options {
-  #     min = 31600
-  #     max = 31600
-  #   }
-  # }
-
-  # egress_security_rules {
-  #   stateless        = false
-  #   destination      = "10.0.1.0/24"
-  #   destination_type = "CIDR_BLOCK"
-  #   protocol         = "6"
-  #   tcp_options {
-  #     min = 10256
-  #     max = 10256
-  #   }
-  # }
 
   dynamic "ingress_security_rules" {
     for_each = var.public_subnet_open_ports
@@ -149,6 +119,13 @@ resource "oci_core_security_list" "public_sl" {
       }
     }
   }
+
+  freeform_tags = var.freeform_tags
+  defined_tags  = var.defined_tags
+
+  lifecycle {
+    ignore_changes = [defined_tags, freeform_tags]
+  }
 }
 
 resource "oci_core_subnet" "public" {
@@ -159,4 +136,11 @@ resource "oci_core_subnet" "public" {
 
   route_table_id    = oci_core_route_table.igw.id
   security_list_ids = [oci_core_security_list.public_sl.id]
+
+  freeform_tags = var.freeform_tags
+  defined_tags  = var.defined_tags
+
+  lifecycle {
+    ignore_changes = [defined_tags, freeform_tags]
+  }
 }
