@@ -27,13 +27,12 @@ resource "oci_containerengine_node_pool" "this" {
         subnet_id           = data.oci_core_subnet.private.id
       }
     }
-    size = 2
+    size = var.node_pool_size
   }
-  node_shape = "VM.Standard.A1.Flex"
-
+  node_shape = var.node_shape
   node_shape_config {
-    memory_in_gbs = 6
-    ocpus         = 1
+    memory_in_gbs = var.node_shape_config.memory_in_gbs
+    ocpus         = var.node_shape_config.ocpus
   }
 
   node_source_details {

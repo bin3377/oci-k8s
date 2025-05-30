@@ -28,9 +28,43 @@ variable "public_subnet_id" {
   description = "The id of the public subnet."
 }
 
+variable "enable_dashboard" {
+  type        = bool
+  description = "Enable Kubernetes Dashboard."
+  default     = true
+}
+
+variable "enable_tiller" {
+  type        = bool
+  description = "Enable Tiller."
+  default     = true
+}
+
+variable "node_pool_size" {
+  type        = number
+  description = "The size of the node pool."
+  default     = 2
+}
+
+variable "node_shape" {
+  type        = string
+  description = "The shape of the node pool."
+  default     = "VM.Standard.A1.Flex"
+}
+
+variable "node_shape_config" {
+  type        = map(any)
+  description = "The shape of the node pool."
+  default = {
+    memory_in_gbs = 6
+    ocpus         = 1
+  }
+}
+
 variable "ssh_public_key" {
   type        = string
-  description = "The public key for SSH to worker node."
+  description = "The public key for SSH to the worker nodes."
+  default     = null
 }
 
 variable "freeform_tags" {

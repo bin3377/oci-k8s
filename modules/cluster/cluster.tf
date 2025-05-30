@@ -23,8 +23,8 @@ resource "oci_containerengine_cluster" "this" {
 
   options {
     add_ons {
-      is_kubernetes_dashboard_enabled = true
-      is_tiller_enabled               = true
+      is_kubernetes_dashboard_enabled = var.enable_dashboard
+      is_tiller_enabled               = var.enable_tiller
     }
 
     service_lb_subnet_ids = [data.oci_core_subnet.public.id]
