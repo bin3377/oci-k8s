@@ -45,12 +45,16 @@ resource "oci_network_load_balancer_backend_set" "this" {
   is_preserve_source       = false
 }
 
+locals {
+  node_ids = data.oci_containerengine_node_pool.node_pool.nodes[*].id
+}
+
 resource "oci_network_load_balancer_backend" "this" {
-  for_each                 = toset(data.oci_containerengine_node_pool.node_pool.nodes[*].id)
+  count                    = length(local.node_ids)
   backend_set_name         = oci_network_load_balancer_backend_set.this.name
   network_load_balancer_id = oci_network_load_balancer_network_load_balancer.this.id
   port                     = var.node_port
-  target_id                = each.value
+  target_id                = local.node_ids[count.index]
 }
 
 resource "oci_network_load_balancer_listener" "this" {
