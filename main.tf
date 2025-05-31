@@ -26,6 +26,26 @@ module "cluster" {
   freeform_tags = var.freeform_tags
 }
 
+data "oci_containerengine_cluster_kube_config" "this" {
+  cluster_id = module.cluster.cluster_id
+}
+
+locals {
+  kubeconfig_cluster   = yamldecode(data.oci_containerengine_cluster_kube_config.this.content)["clusters"][0]["cluster"]
+  kubeconfig_user_exec = yamldecode(data.oci_containerengine_cluster_kube_config.this.content)["users"][0]["user"]["exec"]
+}
+
+provider "kubernetes" {
+  host                   = local.kubeconfig_cluster["server"]
+  cluster_ca_certificate = base64decode(local.kubeconfig_cluster["certificate-authority-data"])
+
+  exec {
+    api_version = local.kubeconfig_user_exec["apiVersion"]
+    args        = local.kubeconfig_user_exec["args"]
+    command     = local.kubeconfig_user_exec["command"]
+  }
+}
+
 module "nginx" {
   source     = "./modules/nginx"
   cluster_id = module.cluster.cluster_id

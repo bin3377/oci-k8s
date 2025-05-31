@@ -15,8 +15,3 @@ terraform {
 provider "oci" {
   config_file_profile = "DEFAULT"
 }
-
-provider "kubernetes" {
-  config_path    = "~/.kube/config"
-  config_context = "oci"
-}
