@@ -27,7 +27,8 @@ module "cluster" {
 }
 
 module "nginx" {
-  source    = "./modules/nginx"
+  source     = "./modules/nginx"
+  cluster_id = module.cluster.cluster_id
 }
 
 output "cluster_id" {
