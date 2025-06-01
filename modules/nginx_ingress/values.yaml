@@ -1,0 +1,6 @@
+controller:
+  service:
+    annotations:
+      "oci.oraclecloud.com/load-balancer-type": "nlb"
+    enableHttp: false
+    enableHttps: true
