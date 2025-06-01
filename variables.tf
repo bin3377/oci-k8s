@@ -33,11 +33,6 @@ variable "cf_zone_id" {
   description = "the id of the zone to create the origin ca certificate in"
 }
 
-variable "cf_account_id" {
-  type        = string
-  description = "the id of the account to create the origin ca certificate in"
-}
-
 variable "cf_api_token" {
   type        = string
   description = "the api token to create the origin ca certificate in"

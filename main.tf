@@ -69,21 +69,21 @@ provider "helm" {
 # }
 
 module "cert" {
-  source = "./modules/cert"
-  zone_id = var.cf_zone_id
+  source    = "./modules/cert"
+  zone_id   = var.cf_zone_id
   hostnames = ["*"]
 }
 
 module "nginx_ingress" {
-  source = "./modules/nginx_ingress"
+  source      = "./modules/nginx_ingress"
   certificate = module.cert.certificate
   private_key = module.cert.private_key
 }
 
 module "dns" {
-  source = "./modules/dns"
-  zone_id = var.cf_zone_id
-  hostnames = ["*"]
+  source           = "./modules/dns"
+  zone_id          = var.cf_zone_id
+  hostnames        = ["*"]
   origin_server_ip = module.nginx_ingress.load_balancer_public_ip
 }
 
