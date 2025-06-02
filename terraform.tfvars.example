@@ -1,0 +1,6 @@
+compartment_id     = 
+ssh_public_key     = 
+cf_api_token       = 
+cf_zone_id         = 
+db_admin_password  = 
+wordpress_password = 
