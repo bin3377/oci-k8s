@@ -24,6 +24,10 @@ resource "cloudflare_origin_ca_certificate" "this" {
   hostnames          = local.dns_names
   request_type       = "origin-rsa"
   requested_validity = 5475
+
+  lifecycle {
+    ignore_changes = [hostnames] # order may change
+  }
 }
 
 output "certificate" {

@@ -90,3 +90,41 @@ module "dns" {
 output "load_balancer_public_ip" {
   value = module.nginx_ingress.load_balancer_public_ip
 }
+
+module "db" {
+  source            = "./modules/db"
+  compartment_id    = var.compartment_id
+  private_subnet_id = module.network.private_subnet_id
+  admin_username    = var.db_admin_username
+  admin_password    = var.db_admin_password
+}
+
+output "db_ip" {
+  value = module.db.ip
+}
+
+output "db_port" {
+  value = module.db.port
+}
+
+data "cloudflare_zone" "zone" {
+  zone_id = var.cf_zone_id
+}
+
+module "wordpress" {
+  source = "./modules/wordpress"
+
+  db_ip       = module.db.ip
+  db_port     = module.db.port
+  db_username = var.db_admin_username
+  db_password = var.db_admin_password
+  db_name     = "wordpress"
+
+  hostname           = "${var.wordpress_hostname}.${data.cloudflare_zone.zone.name}"
+  wordpress_username = var.wordpress_username
+  wordpress_password = var.wordpress_password
+}
+
+output "wordpress_url" {
+  value = module.wordpress.wordpress_url
+}

@@ -37,3 +37,31 @@ variable "cf_api_token" {
   type        = string
   description = "the api token to create the origin ca certificate in"
 }
+
+variable "db_admin_username" {
+  type        = string
+  description = "the admin username for the MySQL DB System."
+  default     = "admin"
+}
+
+variable "db_admin_password" {
+  type        = string
+  description = "the admin password for the MySQL DB System."
+}
+
+variable "wordpress_hostname" {
+  type        = string
+  description = "the hostname for the WordPress site."
+  default     = "blog"
+}
+
+variable "wordpress_username" {
+  type        = string
+  description = "the username for the WordPress."
+  default     = "wordpress"
+}
+
+variable "wordpress_password" {
+  type        = string
+  description = "the password for the WordPress."
+}

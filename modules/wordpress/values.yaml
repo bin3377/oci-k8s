@@ -1,0 +1,17 @@
+# image:
+#   debug: true
+
+mariadb:
+  enabled: false
+
+service:
+  type: ClusterIP
+
+ingress:
+  enabled: true
+  pathType: Prefix
+  ingressClassName: nginx
+  path: /
+  annotations:
+    kubernetes.io/ingress.class: nginx
+  
